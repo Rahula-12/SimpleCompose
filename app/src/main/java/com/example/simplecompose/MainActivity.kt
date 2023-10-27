@@ -19,6 +19,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -56,9 +61,6 @@ fun TapButton(modifier: Modifier=Modifier) {
             color = MaterialTheme.colorScheme.error,
             modifier = modifier
                 .size(100.dp)
-                .clickable {
-                    Log.d("Button", "Clicked")
-                }
         ) {
             Text(
                 modifier = Modifier.padding(
@@ -77,6 +79,9 @@ fun TapButton(modifier: Modifier=Modifier) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GreetingPreview() {
+    var money by rememberSaveable {
+        mutableStateOf(0)
+    }
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -88,21 +93,34 @@ fun GreetingPreview() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "$100",
+                text = "$ $money",
                 fontSize = TextUnit(30f, TextUnitType.Sp),
                 modifier = Modifier
                     .padding(
                         bottom = 100.dp
                     )
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .alpha(
+                        if(money==0)    0f
+                        else 1f
+                    )
+                ,
                 textAlign = TextAlign.Center
             )
-            TapButton()
+            TapButton(modifier=Modifier.clickable{
+                if(money<25)
+                money++
+            })
             Text(
                 text = "Lots of Money",
-                modifier=Modifier.alpha(0f).padding(
-                    top=30.dp
-                )
+                modifier= Modifier
+                    .alpha(
+                        if(money<25)    0f
+                        else    1f
+                    )
+                    .padding(
+                        top = 30.dp
+                    )
             )
         }
     }
