@@ -90,7 +90,7 @@ fun GreetingPreview() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+//            modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 text = "$ $money",
